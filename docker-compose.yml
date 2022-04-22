@@ -1,0 +1,49 @@
+#Specify the version for docker-compose.yml
+version: "3.9"
+
+# add the serivces needed (postgres,go)
+services:
+  postgres:
+    image: postgres:latest
+    platform: linux/amd64
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - DATABASE_HOST=${DB_HOST}
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - learning
+
+
+  go:
+    container_name: horizon_server
+    platform: linux/amd64
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - DATABASE_HOST=${DB_HOST}
+      - DATABASE_PORT=${DB_PORT}
+    tty: true
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+    depends_on:
+      - "postgres"
+    networks:
+      - learning
+
+volumes:
+  dbdata: # create the volume for persisting data.
+
+networks:
+  learning:
+    driver: bridge

@@ -1,0 +1,142 @@
+definitions:
+  interfaces.AuthResponse:
+    properties:
+      data:
+        $ref: '#/definitions/interfaces.CustomerResponse'
+      expiresIn_hour:
+        type: integer
+      jwt:
+        type: string
+      message:
+        type: string
+    type: object
+  interfaces.CustomerResponse:
+    properties:
+      email:
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  interfaces.ErrorResponse:
+    properties:
+      error:
+        $ref: '#/definitions/interfaces.MessageResponse'
+    type: object
+  interfaces.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  interfaces.ProductResponse:
+    properties:
+      amount:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: integer
+    type: object
+  interfaces.Products:
+    properties:
+      products:
+        items:
+          $ref: '#/definitions/interfaces.ProductResponse'
+        type: array
+    type: object
+info:
+  contact: {}
+paths:
+  /login:
+    post:
+      description: Authenticates a user and provides a JWT to Authorize API calls
+      operationId: Authentication
+      parameters:
+      - description: Email
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login Response
+          schema:
+            $ref: '#/definitions/interfaces.AuthResponse'
+        "401":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+      summary: Provides a JSON Web Token for Authenticated Customers
+  /register:
+    post:
+      description: Register New User and Generate JWT Token
+      operationId: Registration
+      parameters:
+      - description: Email
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: Name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Gender (w/m)
+        in: formData
+        name: gender
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login Response
+          schema:
+            $ref: '#/definitions/interfaces.AuthResponse'
+        "400":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+      summary: Register New User
+  /tour:
+    get:
+      description: Get list of product
+      operationId: GetProducts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product List
+          schema:
+            $ref: '#/definitions/interfaces.Products'
+        "500":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+      summary: Get Product List
+securityDefinitions:
+  JWT:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
