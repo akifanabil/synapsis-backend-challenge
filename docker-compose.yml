@@ -6,7 +6,7 @@ services:
   postgres:
     image: postgres:latest
     platform: linux/amd64
-    container_name: postgres
+    container_name: postgres-synapsis
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -21,7 +21,7 @@ services:
 
 
   go:
-    container_name: horizon_server
+    container_name: be_challenge
     platform: linux/amd64
     environment:
       - POSTGRES_USER=${DB_USER}

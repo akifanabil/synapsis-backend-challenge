@@ -8,6 +8,7 @@ type Customer struct {
 	Email    string
 	Password string
 	Gender   string
+	Balance  int
 	Chart  []Chart `gorm:"foreignKey:CustomerID"`
 }
 
@@ -16,6 +17,7 @@ type CustomerResponse struct {
 	Name   string
 	Email  string
 	Gender string
+	Balance  int
 }
 
 type AuthResponse struct {

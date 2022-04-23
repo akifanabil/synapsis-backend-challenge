@@ -57,6 +57,7 @@ func (h handler) Login(c *gin.Context) {
 		Name:	user.Name,
 		Email:  user.Email,
 		Gender: user.Gender,
+		Balance:user.Balance,
 	}
 
 	// Sign token
@@ -101,10 +102,11 @@ func (h handler) Register(c *gin.Context) {
 	gender := c.Request.FormValue("gender")
 
 	user := &interfaces.Customer{
-		Email:    email,
-		Password: helpers.HashAndSalt([]byte(password)),
-		Name:     name,
-		Gender:   gender,
+		Email		: email,
+		Password	: helpers.HashAndSalt([]byte(password)),
+		Name		: name,
+		Gender		: gender,
+		Balance		: 0,
 	}
 
 	var email_unique = false;
@@ -133,10 +135,11 @@ func (h handler) Register(c *gin.Context) {
 
 	// Setup response
 	customerResponse := &interfaces.CustomerResponse{
-		ID:     user.ID,
-		Name:   user.Name,
-		Email:  user.Email,
-		Gender: user.Gender,
+		ID		: user.ID,
+		Name	: user.Name,
+		Email	: user.Email,
+		Gender	: user.Gender,
+		Balance	: user.Balance,
 	}
 
 	// Sign token
