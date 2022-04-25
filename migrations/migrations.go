@@ -23,7 +23,7 @@ func Init() *gorm.DB {
 	db_pass := os.Getenv("DB_PASSWORD")
 	db_name := os.Getenv("DB_NAME")
 
-	dbURL := db_driver + "://" + db_user + ":" + db_pass + "@" + db_host + ":" + db_port + "/" + db_name
+	dbURL := db_driver + "://" + db_user + ":" + db_pass + "@" + db_host + ":" + db_port + "/" + db_name +"?sslmode=require" 
 	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	helpers.HandleError(err)
 

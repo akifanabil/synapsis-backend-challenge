@@ -1,0 +1,1 @@
+web: synapsis-challenge
