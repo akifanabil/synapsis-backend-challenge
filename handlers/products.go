@@ -15,12 +15,14 @@ import (
 // @Produce json
 // @Success 200 {object} interfaces.Products "Product List"
 // @Failure 500 {object} interfaces.ErrorResponse "Error Response"
-// @Router /tour [get]
+// @Router /tour/{category} [get]
 func (h handler) GetProducts(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 
+	category := c.Param("category")
+
 	var result []interfaces.ProductResponse
-	if res := h.DB.Table("products").Select("id", "name", "description", "amount", "price").Scan(&result); res.Error != nil {
+	if res := h.DB.Table("products").Select("id, name, category, description, amount, price").Where("category = ?",category).Scan(&result); res.Error != nil {
 		var response = &interfaces.MessageResponse{Message: "error while getting products",}
 		c.JSON(http.StatusInternalServerError, &interfaces.ErrorResponse{
 			Error : *response,
@@ -28,8 +30,10 @@ func (h handler) GetProducts(c *gin.Context) {
 		return
 	}
 
-	var products = &interfaces.Products{Products : result}
+	var products = &interfaces.Products{Products : result,}
 
 	// Setup response
 	c.JSON(http.StatusOK, products)
 }
+
+

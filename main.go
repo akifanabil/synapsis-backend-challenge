@@ -50,8 +50,12 @@ func main() {
 	api := router.Group(docs.SwaggerInfo.BasePath)
 	api.POST("/login", h.Login)
 	api.POST("/register", h.Register)
-	api.GET("/product", h.GetProducts)
+	api.GET("/product/:category", h.GetProducts)
+	api.GET("/chart",h.GetChart)
+	api.POST("/chart", h.AddChart)
 	
+	
+
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	
 	router.Run(HOST+":"+PORT)
