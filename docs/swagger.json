@@ -1,0 +1,216 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/login": {
+            "post": {
+                "description": "Authenticates a user and provides a JWT to Authorize API calls",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Provides a JSON Web Token for Authenticated Customers",
+                "operationId": "Authentication",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Password",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.AuthResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "description": "Register New User and Generate JWT Token",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Register New User",
+                "operationId": "Registration",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Password",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Gender (w/m)",
+                        "name": "gender",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.AuthResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/tour": {
+            "get": {
+                "description": "Get list of product",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get Product List",
+                "operationId": "GetProducts",
+                "responses": {
+                    "200": {
+                        "description": "Product List",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.Products"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "interfaces.AuthResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/interfaces.CustomerResponse"
+                },
+                "expiresIn_hour": {
+                    "type": "integer"
+                },
+                "jwt": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "interfaces.CustomerResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "interfaces.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/interfaces.MessageResponse"
+                }
+            }
+        },
+        "interfaces.MessageResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "interfaces.ProductResponse": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                }
+            }
+        },
+        "interfaces.Products": {
+            "type": "object",
+            "properties": {
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/interfaces.ProductResponse"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "JWT": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
