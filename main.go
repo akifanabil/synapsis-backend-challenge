@@ -54,6 +54,7 @@ func main() {
 	api.GET("/cart",h.GetCart)
 	api.POST("/cart", h.AddCart)
 	api.DELETE("/cart", h.DeleteCartItem)
+	api.POST("/checkout", h.Checkout)
 	
 	
 

@@ -1,12 +1,10 @@
 package handlers
 
 import (
-	// "github.com/akifanabil/synapsis-backend-challenge/helpers"
 	"github.com/akifanabil/synapsis-backend-challenge/interfaces"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	// "github.com/golang-jwt/jwt/v4"
 )
 
 // @Summary Get Product List

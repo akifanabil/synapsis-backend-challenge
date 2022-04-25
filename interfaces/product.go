@@ -10,6 +10,7 @@ type Product struct {
 	Amount	 		int
 	Price			int
 	Cart  			[]Cart `gorm:"foreignKey:ProductID"`
+	Transactions	[]Transaction `gorm:"foreignKey:CustomerID"`
 }
 
 type ProductResponse struct {
