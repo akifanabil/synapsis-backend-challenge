@@ -27,6 +27,6 @@ func Init() *gorm.DB {
 	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	helpers.HandleError(err)
 
-	db.AutoMigrate(&interfaces.Customer{}, &interfaces.Product{}, &interfaces.Chart{})
+	db.AutoMigrate(&interfaces.Customer{}, &interfaces.Product{}, &interfaces.Cart{})
 	return db
 }

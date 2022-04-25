@@ -9,7 +9,7 @@ type Customer struct {
 	Password string
 	Gender   string
 	Balance  int
-	Chart  []Chart `gorm:"foreignKey:CustomerID"`
+	Cart  	[]Cart `gorm:"foreignKey:CustomerID"`
 }
 
 type CustomerResponse struct {

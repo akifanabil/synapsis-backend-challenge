@@ -51,8 +51,9 @@ func main() {
 	api.POST("/login", h.Login)
 	api.POST("/register", h.Register)
 	api.GET("/product/:category", h.GetProducts)
-	api.GET("/chart",h.GetChart)
-	api.POST("/chart", h.AddChart)
+	api.GET("/cart",h.GetCart)
+	api.POST("/cart", h.AddCart)
+	api.DELETE("/cart", h.DeleteCartItem)
 	
 	
 

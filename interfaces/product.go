@@ -9,7 +9,7 @@ type Product struct {
 	Description     string
 	Amount	 		int
 	Price			int
-	Chart  			[]Chart `gorm:"foreignKey:ProductID"`
+	Cart  			[]Cart `gorm:"foreignKey:ProductID"`
 }
 
 type ProductResponse struct {
