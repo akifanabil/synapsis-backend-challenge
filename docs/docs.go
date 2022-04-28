@@ -16,6 +16,182 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/cart": {
+            "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Get list of cart",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get User's cart",
+                "operationId": "Getcart",
+                "responses": {
+                    "200": {
+                        "description": "List of cart",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.Carts"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Add product to user's cart",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Add cart",
+                "operationId": "Addcart",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "product_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Amount of Product",
+                        "name": "amount",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete cart Item",
+                "operationId": "Deletecart",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "product_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Amount",
+                        "name": "amount",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted cart Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/checkout": {
+            "post": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Buy Item",
+                "operationId": "Buy",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "product_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Amount",
+                        "name": "amount",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Authenticates a user and provides a JWT to Authorize API calls",
@@ -48,6 +224,39 @@ const docTemplate = `{
                         }
                     },
                     "401": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{category}": {
+            "get": {
+                "description": "Get list of product",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get Product List",
+                "operationId": "GetProducts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category",
+                        "name": "category",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product List",
+                        "schema": {
+                            "$ref": "#/definitions/interfaces.Products"
+                        }
+                    },
+                    "500": {
                         "description": "Error Response",
                         "schema": {
                             "$ref": "#/definitions/interfaces.ErrorResponse"
@@ -109,30 +318,6 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/tour": {
-            "get": {
-                "description": "Get list of product",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Get Product List",
-                "operationId": "GetProducts",
-                "responses": {
-                    "200": {
-                        "description": "Product List",
-                        "schema": {
-                            "$ref": "#/definitions/interfaces.Products"
-                        }
-                    },
-                    "500": {
-                        "description": "Error Response",
-                        "schema": {
-                            "$ref": "#/definitions/interfaces.ErrorResponse"
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -153,9 +338,46 @@ const docTemplate = `{
                 }
             }
         },
+        "interfaces.CartResponse": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "productID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "interfaces.Carts": {
+            "type": "object",
+            "properties": {
+                "carts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/interfaces.CartResponse"
+                    }
+                }
+            }
+        },
         "interfaces.CustomerResponse": {
             "type": "object",
             "properties": {
+                "balance": {
+                    "type": "integer"
+                },
                 "email": {
                     "type": "string"
                 },
@@ -192,6 +414,9 @@ const docTemplate = `{
                 "amount": {
                     "type": "integer"
                 },
+                "category": {
+                    "type": "string"
+                },
                 "description": {
                     "type": "string"
                 },
@@ -214,6 +439,14 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/interfaces.ProductResponse"
                     }
+                }
+            }
+        },
+        "interfaces.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "response": {
+                    "$ref": "#/definitions/interfaces.MessageResponse"
                 }
             }
         }

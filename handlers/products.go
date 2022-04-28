@@ -11,9 +11,10 @@ import (
 // @Description Get list of product
 // @ID GetProducts
 // @Produce json
+// @Param category path string true "Category"
 // @Success 200 {object} interfaces.Products "Product List"
 // @Failure 500 {object} interfaces.ErrorResponse "Error Response"
-// @Router /tour/{category} [get]
+// @Router /product/{category} [get]
 func (h handler) GetProducts(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 

@@ -16,9 +16,9 @@ import (
 
 )
 
-// @Summary Delete cart Item
+// @Summary Buy Item
 // @Security JWT
-// @ID Deletecart
+// @ID Buy
 // @Consume application/x-www-form-urlencoded
 // @Produce json
 // @Param product_id formData int true "Product ID"
@@ -26,7 +26,7 @@ import (
 // @Success 200 {object} interfaces.SuccessResponse "Success Response"
 // @Failure 400 {object} interfaces.ErrorResponse "Error Response"
 // @Failure 500 {object} interfaces.ErrorResponse "Error Response"
-// @Router /cart [delete]
+// @Router /checkout [post]
 func (h handler) Checkout(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 

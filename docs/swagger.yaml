@@ -10,8 +10,32 @@ definitions:
       message:
         type: string
     type: object
+  interfaces.CartResponse:
+    properties:
+      amount:
+        type: integer
+      category:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      productID:
+        type: integer
+    type: object
+  interfaces.Carts:
+    properties:
+      carts:
+        items:
+          $ref: '#/definitions/interfaces.CartResponse'
+        type: array
+    type: object
   interfaces.CustomerResponse:
     properties:
+      balance:
+        type: integer
       email:
         type: string
       gender:
@@ -35,6 +59,8 @@ definitions:
     properties:
       amount:
         type: integer
+      category:
+        type: string
       description:
         type: string
       id:
@@ -51,9 +77,127 @@ definitions:
           $ref: '#/definitions/interfaces.ProductResponse'
         type: array
     type: object
+  interfaces.SuccessResponse:
+    properties:
+      response:
+        $ref: '#/definitions/interfaces.MessageResponse'
+    type: object
 info:
   contact: {}
 paths:
+  /cart:
+    delete:
+      operationId: Deletecart
+      parameters:
+      - description: Product ID
+        in: formData
+        name: product_id
+        required: true
+        type: integer
+      - description: Amount
+        in: formData
+        name: amount
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted cart Response
+          schema:
+            $ref: '#/definitions/interfaces.SuccessResponse'
+        "400":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+        "500":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+      security:
+      - JWT: []
+      summary: Delete cart Item
+    get:
+      description: Get list of cart
+      operationId: Getcart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of cart
+          schema:
+            $ref: '#/definitions/interfaces.Carts'
+        "500":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+      security:
+      - JWT: []
+      summary: Get User's cart
+    post:
+      description: Add product to user's cart
+      operationId: Addcart
+      parameters:
+      - description: Product ID
+        in: formData
+        name: product_id
+        required: true
+        type: integer
+      - description: Amount of Product
+        in: formData
+        name: amount
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/interfaces.SuccessResponse'
+        "400":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+        "500":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+      security:
+      - JWT: []
+      summary: Add cart
+  /checkout:
+    post:
+      operationId: Buy
+      parameters:
+      - description: Product ID
+        in: formData
+        name: product_id
+        required: true
+        type: integer
+      - description: Amount
+        in: formData
+        name: amount
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response
+          schema:
+            $ref: '#/definitions/interfaces.SuccessResponse'
+        "400":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+        "500":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+      security:
+      - JWT: []
+      summary: Buy Item
   /login:
     post:
       description: Authenticates a user and provides a JWT to Authorize API calls
@@ -81,6 +225,28 @@ paths:
           schema:
             $ref: '#/definitions/interfaces.ErrorResponse'
       summary: Provides a JSON Web Token for Authenticated Customers
+  /product/{category}:
+    get:
+      description: Get list of product
+      operationId: GetProducts
+      parameters:
+      - description: Category
+        in: path
+        name: category
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product List
+          schema:
+            $ref: '#/definitions/interfaces.Products'
+        "500":
+          description: Error Response
+          schema:
+            $ref: '#/definitions/interfaces.ErrorResponse'
+      summary: Get Product List
   /register:
     post:
       description: Register New User and Generate JWT Token
@@ -118,22 +284,6 @@ paths:
           schema:
             $ref: '#/definitions/interfaces.ErrorResponse'
       summary: Register New User
-  /tour:
-    get:
-      description: Get list of product
-      operationId: GetProducts
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Product List
-          schema:
-            $ref: '#/definitions/interfaces.Products'
-        "500":
-          description: Error Response
-          schema:
-            $ref: '#/definitions/interfaces.ErrorResponse'
-      summary: Get Product List
 securityDefinitions:
   JWT:
     in: header

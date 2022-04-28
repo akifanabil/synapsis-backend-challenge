@@ -38,9 +38,14 @@ func main() {
 	docs.SwaggerInfo.Title = "Horizon APP API Documentation"
 	docs.SwaggerInfo.Description = "API Documentation for Horizon App"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8080"
+	if (os.Getenv("ENV") == "PROD"){
+		docs.SwaggerInfo.Host = os.Getenv("HOST")
+		docs.SwaggerInfo.Schemes = []string{"https"}
+	} else{
+		docs.SwaggerInfo.Host = "localhost:8080"
+		docs.SwaggerInfo.Schemes = []string{"http"}
+	}
 	docs.SwaggerInfo.BasePath = "/api"
-	docs.SwaggerInfo.Schemes = []string{"http"}
 	
 	DB := migrations.Init()
 	h := handlers.New(DB)
@@ -59,6 +64,11 @@ func main() {
 	
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	
-	router.Run(HOST+":"+PORT)
+
+	if (os.Getenv("ENV") == "PROD"){
+		gin.SetMode(gin.ReleaseMode)
+		router.Run()
+	} else{
+		router.Run(HOST+":"+PORT)
+	}
 }

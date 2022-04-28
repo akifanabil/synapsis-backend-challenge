@@ -21,7 +21,7 @@ import (
 // @Description Get list of cart
 // @ID Getcart
 // @Produce json
-// @Success 200 {object} interfaces.carts "List of cart"
+// @Success 200 {object} interfaces.Carts "List of cart"
 // @Failure 500 {object} interfaces.ErrorResponse "Error Response"
 // @Router /cart [get]
 func (h handler) GetCart(c *gin.Context) {
