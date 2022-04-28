@@ -10,6 +10,9 @@ This is a simple backend app (RESTful API) made for online shopping apps
 * Customers can checkout and make payment transactions
 * Login and register customers
 
+## System Design : ERD
+![Alt text](./erd.png?raw=true "Entity Relationship Diagram")
+
 ## API docummentation
 Here's a link to the swagger open API:
 https://synapsis-be-challenge.herokuapp.com/swagger/index.html
